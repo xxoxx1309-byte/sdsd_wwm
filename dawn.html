@@ -3,89 +3,250 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-<title>시매사 계산기 (보너스 & 세금 감면 구분)</title>
+<title>시매사 계산기</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet" />
 <style>
   body {
     font-family: 'Noto Sans', sans-serif;
-    background-color: #121212;
-    color: #eee;
-    max-width: 440px;
     margin: 30px auto;
-    padding: 20px;
-    border-radius: 10px;
+    max-width: 440px;
+    padding: 24px 20px 32px;
+    border-radius: 12px;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    position: relative;
+    min-height: 100vh;
   }
-  label, input, select, button {
+  h2 {
+    text-align: center;
+    margin-bottom: 28px;
+    font-weight: 700;
+    user-select: none;
+    transition: color 0.4s ease;
+  }
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 1.1em;
+  }
+  input[type="number"], select, button {
     width: 100%;
     max-width: 320px;
     font-size: 1.1em;
-    margin: 10px 0 6px;
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #444;
-    background-color: #222;
-    color: #eee;
+    margin-bottom: 18px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    border: 1.5px solid;
+    box-sizing: border-box;
+    transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
     display: block;
   }
   button {
-    background-color: #ff5964;
-    border: none;
+    font-weight: 700;
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+    user-select: none;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px transparent;
   }
-  button:hover {
-    background-color: #f44336;
+  button:active {
+    transform: scale(0.97);
   }
   #result {
-    margin-top: 20px;
-    font-size: 1.4em;
+    margin-top: 26px;
+    font-size: 1.5em;
     font-weight: 700;
-    color: #ff5964;
     text-align: center;
+    min-height: 34px;
+    letter-spacing: 0.03em;
+    user-select: text;
+    transition: color 0.4s ease;
+    word-break: keep-all;
+  }
+  #modeButtons, #langButtons {
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  #modeButtons button, #langButtons button {
+    width: auto;
+    max-width: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 2px solid transparent;
+    margin: 0 8px;
+  }
+  #modeButtons button.active, #langButtons button.active {
+    box-shadow: 0 0 8px 2px currentColor;
+    border-color: currentColor;
+  }
+
+  /* UID 표시 */
+  #creatorUID {
+    position: fixed;
+    bottom: 8px;
+    right: 12px;
+    font-size: 0.75em;
+    color: #888;
+    opacity: 0.5;
+    user-select: none;
+    font-family: 'Noto Sans', sans-serif;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* 다크 모드 */
+  body.dark {
+    background-color: #121212;
+    color: #d6f0f0;
+    box-shadow: 0 6px 16px rgba(84, 148, 138, 0.5);
+  }
+  body.dark h2 {
+    color: #54948a;
+  }
+  body.dark label {
+    color: #76b4ae;
+  }
+  body.dark input[type="number"], body.dark select {
+    background-color: #1f3936;
+    border-color: #3a6560;
+    color: #d6f0f0;
+  }
+  body.dark input[type="number"]:focus, body.dark select:focus {
+    border-color: #7dbfb7;
+    outline: none;
+  }
+  body.dark button.calc {
+    background-color: #54948a;
+    color: #fff;
+    border: none;
+    box-shadow: 0 4px 8px rgba(84, 148, 138, 0.6);
+  }
+  body.dark button.calc:hover {
+    background-color: #3f6f69;
+  }
+  body.dark #result {
+    color: #7dbfb7;
+  }
+  body.dark #modeButtons button, body.dark #langButtons button {
+    background-color: transparent;
+    color: #76b4ae;
+    border-color: transparent;
+  }
+  body.dark #modeButtons button.active, body.dark #langButtons button.active {
+    color: #54948a;
+    border-color: #54948a;
+    box-shadow: 0 0 8px 2px #54948a;
+  }
+
+  /* 라이트 모드 */
+  body.light {
+    background-color: #fdfdfd;
+    color: #333;
+    box-shadow: 0 6px 16px rgba(84, 148, 138, 0.3);
+  }
+  body.light h2 {
+    color: #317066;
+  }
+  body.light label {
+    color: #4a7a72;
+  }
+  body.light input[type="number"], body.light select {
+    background-color: #fff;
+    border-color: #bbb;
+    color: #333;
+  }
+  body.light input[type="number"]:focus, body.light select:focus {
+    border-color: #54948a;
+    outline: none;
+  }
+  body.light button.calc {
+    background-color: #54948a;
+    color: #fff;
+    border: none;
+    box-shadow: 0 4px 8px rgba(84, 148, 138, 0.6);
+  }
+  body.light button.calc:hover {
+    background-color: #3f6f69;
+  }
+  body.light #result {
+    color: #317066;
+  }
+  body.light #modeButtons button, body.light #langButtons button {
+    background-color: transparent;
+    color: #4a7a72;
+    border-color: transparent;
+  }
+  body.light #modeButtons button.active, body.light #langButtons button.active {
+    color: #54948a;
+    border-color: #54948a;
+    box-shadow: 0 0 8px 2px #54948a;
+  }
+
+  @media (max-width: 360px) {
+    body {
+      margin: 20px 12px;
+      padding: 20px 12px 28px;
+    }
+    input[type="number"], select, button {
+      max-width: 100%;
+      font-size: 1em;
+    }
+    h2 {
+      font-size: 1.5rem;
+    }
+    #result {
+      font-size: 1.3em;
+    }
+    #modeButtons button, #langButtons button {
+      padding: 6px 14px;
+      margin: 0 4px;
+    }
   }
 </style>
 </head>
-<body>
+<body class="dark" lang="ko">
 
-<h2>시매사 계산기</h2>
+<!-- 모드 전환 버튼 -->
+<div id="modeButtons">
+  <button type="button" id="darkBtn" class="active" aria-pressed="true">다크 모드 🌙</button>
+  <button type="button" id="lightBtn" aria-pressed="false">라이트 모드 ☀️</button>
+</div>
 
-<label for="price">가격 입력 (원)</label>
-<input type="number" id="price" min="0" value="0" />
+<!-- 언어 전환 버튼 -->
+<div id="langButtons">
+  <button type="button" id="koBtn" class="active" aria-pressed="true">한국어 🇰🇷</button>
+  <button type="button" id="enBtn" aria-pressed="false">English 🇺🇸</button>
+</div>
 
-<label for="bonusLevel">판매 보너스 단계 선택 (1~20)</label>
-<select id="bonusLevel"></select>
+<h2 id="title">시매사 계산기</h2>
 
-<label for="taxLevel">세금 감면 단계 선택 (1~20)</label>
-<select id="taxLevel"></select>
+<label for="price" id="labelPrice">가격 입력 (단맥전)</label>
+<input type="number" id="price" min="0" value="0" placeholder="가격을 입력하세요" />
 
-<button onclick="calculate()">계산하기</button>
+<label for="bonusLevel" id="labelBonus">판매 보너스 단계 선택 (1~20)</label>
+<select id="bonusLevel" aria-label="판매 보너스 단계 선택"></select>
 
-<div id="result">최종 가격</div>
+<label for="taxLevel" id="labelTax">세금 감면 단계 선택 (1~20)</label>
+<select id="taxLevel" aria-label="세금 감면 단계 선택"></select>
+
+<button type="button" class="calc" id="calcBtn">계산하기</button>
+
+<div id="result" aria-live="polite" aria-atomic="true">최종 가격</div>
+
+<!-- 제작자 UID 표시 -->
+<div id="creatorUID" aria-hidden="true">UID : 0037013535</div>
 
 <script>
-  // 레벨별 판매 보너스 배열 (예시)
-  const bonusData = [
-    null,
-    0.05, 0.055, 0.06, 0.065, 0.07,
-    0.075, 0.08, 0.085, 0.09, 0.095,
-    0.10, 0.105, 0.11, 0.115, 0.12,
-    0.125, 0.13, 0.135, 0.14, 0.145,
-  ];
+  // 보너스 및 세금 감면 데이터
+  const bonusData = [null,0.05,0.055,0.06,0.065,0.07,0.075,0.08,0.085,0.09,0.095,
+    0.10,0.105,0.11,0.115,0.12,0.125,0.13,0.135,0.14,0.145];
+  const taxReduceData = [null,0.995,0.99,0.985,0.98,0.975,0.97,0.965,0.96,0.955,
+    0.95,0.945,0.94,0.935,0.93,0.925,0.92,0.915,0.91,0.905,0.90];
 
-  // 레벨별 세금 감면률 배열 (예시)
-  const taxReduceData = [
-    null,
-    0.995, 0.99, 0.985, 0.98, 0.975,
-    0.97, 0.965, 0.96, 0.955, 0.95,
-    0.945, 0.94, 0.935, 0.93, 0.925,
-    0.92, 0.915, 0.91, 0.905, 0.90
-  ];
-
+  // DOM 변수 참조
   const bonusSelect = document.getElementById('bonusLevel');
   const taxSelect = document.getElementById('taxLevel');
 
-  // 옵션 자동 생성 (1~20)
+  // 옵션 생성
   for(let i=1; i<=20; i++) {
     const bOpt = document.createElement('option');
     bOpt.value = i;
@@ -98,30 +259,107 @@
     taxSelect.appendChild(tOpt);
   }
 
+  // 다국어 사전 (단위 포함)
+  const dict = {
+    ko: {
+      title: "시매사 계산기",
+      labelPrice: "가격 입력 (단맥전)",
+      placeholderPrice: "가격을 입력하세요",
+      labelBonus: "판매 보너스 단계 선택 (1~20)",
+      labelTax: "세금 감면 단계 선택 (1~20)",
+      btnCalc: "계산하기",
+      errSelect: "1~20단계 사이를 선택해주세요!",
+      resultText: (price) => `최종 판매 가격: ${price.toLocaleString()} 단맥전입니다!`
+    },
+    en: {
+      title: "Simaysa Calculator",
+      labelPrice: "Enter Price (commerce coin)",
+      placeholderPrice: "Enter price",
+      labelBonus: "Select Sales Bonus Level (1~20)",
+      labelTax: "Select Tax Reduction Level (1~20)",
+      btnCalc: "Calculate",
+      errSelect: "Please select a level from 1 to 20!",
+      resultText: (price) => `Final Sale Price: ${price.toLocaleString()} commerce coin`
+    }
+  };
+
+  // UI 텍스트 변경 함수
+  function setLanguage(lang) {
+    const d = dict[lang];
+    document.getElementById('title').textContent = d.title;
+    document.getElementById('labelPrice').textContent = d.labelPrice;
+    document.getElementById('price').placeholder = d.placeholderPrice;
+    document.getElementById('labelBonus').textContent = d.labelBonus;
+    document.getElementById('labelTax').textContent = d.labelTax;
+    document.getElementById('calcBtn').textContent = d.btnCalc;
+    document.getElementById('result').textContent = lang === 'ko' ? "최종 가격" : "Final Price";
+    document.documentElement.lang = lang;
+
+    // aria-pressed 업데이트
+    koBtn.setAttribute('aria-pressed', lang === 'ko');
+    enBtn.setAttribute('aria-pressed', lang === 'en');
+  }
+
+  // 계산 함수
   function calculate() {
     const price = Number(document.getElementById('price').value);
     const bonusLevel = Number(bonusSelect.value);
     const taxLevel = Number(taxSelect.value);
+    const lang = document.documentElement.lang || 'ko';
 
     if (!bonusData[bonusLevel] || !taxReduceData[taxLevel]) {
-      document.getElementById('result').textContent = "1~20단계 사이를 선택해주세요!";
+      document.getElementById('result').textContent = dict[lang].errSelect;
       return;
     }
 
     const bonus = bonusData[bonusLevel];
     const taxReduce = taxReduceData[taxLevel];
-
-    // 계산 공식: 가격 * (1 + 판매 보너스) * 세금 감면률
     const finalPrice = price * (1 + bonus) * taxReduce;
 
-    document.getElementById('result').textContent =
-      `최종 판매 가격: ${Math.round(finalPrice).toLocaleString()} 원입니다!`;
+    document.getElementById('result').textContent = dict[lang].resultText(Math.round(finalPrice));
   }
 
   window.onload = () => {
     bonusSelect.value = '1';
     taxSelect.value = '1';
+    setLanguage('ko');
   };
+
+  // 모드 버튼 이벤트
+  const darkBtn = document.getElementById('darkBtn');
+  const lightBtn = document.getElementById('lightBtn');
+  const koBtn = document.getElementById('koBtn');
+  const enBtn = document.getElementById('enBtn');
+  const body = document.body;
+
+  darkBtn.addEventListener('click', () => {
+    body.classList.add('dark');
+    body.classList.remove('light');
+    darkBtn.classList.add('active');
+    darkBtn.setAttribute('aria-pressed', 'true');
+    lightBtn.classList.remove('active');
+    lightBtn.setAttribute('aria-pressed', 'false');
+  });
+
+  lightBtn.addEventListener('click', () => {
+    body.classList.add('light');
+    body.classList.remove('dark');
+    lightBtn.classList.add('active');
+    lightBtn.setAttribute('aria-pressed', 'true');
+    darkBtn.classList.remove('active');
+    darkBtn.setAttribute('aria-pressed', 'false');
+  });
+
+  koBtn.addEventListener('click', () => {
+    setLanguage('ko');
+  });
+
+  enBtn.addEventListener('click', () => {
+    setLanguage('en');
+  });
+
+  // 계산 버튼 클릭
+  document.getElementById('calcBtn').addEventListener('click', calculate);
 </script>
 
 </body>
