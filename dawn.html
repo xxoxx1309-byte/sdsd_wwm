@@ -1,197 +1,188 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>시매사 계산기</title>
-<!-- 구글 노토 산스 폰트 불러오기 -->
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet" />
-<style>
-  /* 기본 세팅 및 폰트 */
-  html, body {
-    margin: 0; padding: 0; height: 100%;
-    font-family: 'Noto Sans', sans-serif;
-  }
-  body {
-    background-color: #fdfdfd;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px 10px 40px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  body.dark {
-    background-color: #121212;
-    color: #d6f0f0;
-  }
-  /* 전체 컨테이너 */
-  #container {
-    max-width: 480px;
-    width: 100%;
-    background: #fff;
-    border-radius: 12px;
-    padding: 24px 20px 48px;
-    box-sizing: border-box;
-    box-shadow: 0 6px 16px rgba(84,148,138,0.3);
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  body.dark #container {
-    background-color: #1f3936;
-    box-shadow: 0 6px 20px rgba(84,148,138,0.7);
-    color: #d6f0f0;
-  }
-  h2 {
-    text-align: center;
-    font-weight: 700;
-    font-size: 1.8rem;
-    margin-bottom: 28px;
-  }
-  body.dark h2 {
-    color: #54948a;
-  }
-
-  /* 상단 버튼 그룹 */
-  #topButtons {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-  }
-  #topButtons button {
-    padding: 8px 20px;
-    border-radius: 20px;
-    border: 2px solid transparent;
-    cursor: pointer;
-    font-weight: 600;
-    background: none;
-    color: #54948a;
-    transition: all 0.3s ease;
-  }
-  #topButtons button.active {
-    background-color: #54948a;
-    color: #fff;
-    border-color: #54948a;
-    box-shadow: 0 0 8px 2px #54948a;
-  }
-  #topButtons button:hover:not(.active) {
-    background-color: #b2d8d2;
-    color: #2f6e63;
-  }
-  body.dark #topButtons button {
-    color: #76b4ae;
-  }
-  body.dark #topButtons button.active {
-    background-color: #54948a;
-    color: #fff;
-  }
-  body.dark #topButtons button:hover:not(.active) {
-    background-color: #3a665f;
-    color: #c0e0d8;
-  }
-
-  /* 입력 필드 스타일 */
-  label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 600;
-    font-size: 1.1em;
-    color: #4a7a72;
-  }
-  body.dark label {
-    color: #76b4ae;
-  }
-  input[type="number"] {
-    width: 100%;
-    max-width: 320px;
-    padding: 12px 14px;
-    font-size: 1.1em;
-    margin-bottom: 18px;
-    border-radius: 8px;
-    border: 1.5px solid #bbb;
-    background-color: #fff;
-    color: #333;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-  }
-  body.dark input[type="number"] {
-    background-color: #164137;
-    border-color: #3a6560;
-    color: #d6f0f0;
-  }
-  input[type="number"]:focus {
-    border-color: #54948a;
-    outline: none;
-  }
-
-  /* 계산 버튼 */
-  button.calc {
-    width: 100%;
-    max-width: 320px;
-    font-weight: 700;
-    font-size: 1.25em;
-    padding: 14px 0;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: #54948a;
-    color: #fff;
-    box-shadow: 0 4px 8px rgba(84,148,138,0.6);
-    transition: background-color 0.3s ease;
-  }
-  button.calc:hover {
-    background-color: #3f6f69;
-  }
-  button.calc:active {
-    transform: scale(0.97);
-  }
-
-  /* 결과 출력 */
-  pre#result {
-    margin-top: 26px;
-    font-weight: 700;
-    font-size: 1.4em;
-    min-height: 80px;
-    white-space: pre-line;
-    text-align: center;
-    color: #317066;
-    user-select: text;
-  }
-  body.dark pre#result {
-    color: #7dbfb7;
-  }
-
-  /* UID 하단 정중앙 */
-  #creatorUID {
-    text-align: center;
-    margin-top: 16px;
-    font-size: 0.85em;
-    color: #888;
-    opacity: 0.6;
-    user-select: none;
-  }
-  body.dark #creatorUID {
-    color: #bbb;
-  }
-
-  /* 반응형 */
-  @media (max-width: 480px) {
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>시매사 계산기</title>
+  <!-- 노토 산스 폰트 불러오기 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet" />
+  <style>
+    /* 기본 전체 설정 */
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Noto Sans', sans-serif;
+    }
+    body {
+      background-color: #fdfdfd;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center; /* 가로 중앙정렬 */
+      align-items: center;     /* 세로 중앙정렬 */
+      padding: 20px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    body.dark {
+      background-color: #121212;
+      color: #d6f0f0;
+    }
+    /* 컨테이너 */
     #container {
+      max-width: 480px;
       width: 100%;
+      padding: 24px 20px 48px;
+      background-color: #fff;
+      border-radius: 12px;
+      box-sizing: border-box;
+      box-shadow: 0 6px 16px rgba(84,148,138,0.3);
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
-    #topButtons button, button.calc, input[type="number"] {
-      max-width: 100%;
+    body.dark #container {
+      background-color: #1f3936;
+      box-shadow: 0 6px 20px rgba(84,148,138,0.75);
+      color: #d6f0f0;
     }
-  }
-</style>
+    h2 {
+      margin-bottom: 28px;
+      font-weight: 700;
+      font-size: 1.8rem;
+      text-align: center;
+    }
+    body.dark h2 {
+      color: #54948a;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 1.1em;
+      color: #4a7a72;
+    }
+    body.dark label {
+      color: #76b4ae;
+    }
+    input[type="number"] {
+      width: 100%;
+      max-width: 320px;
+      padding: 12px 14px;
+      margin-bottom: 18px;
+      font-size: 1.1em;
+      border-radius: 8px;
+      border: 1.5px solid #bbb;
+      box-sizing: border-box;
+      background-color: #fff;
+      color: #333;
+      transition: all 0.3s ease;
+    }
+    body.dark input[type="number"] {
+      background-color: #164137;
+      border-color: #3a6560;
+      color: #d6f0f0;
+    }
+    input[type="number"]:focus {
+      border-color: #54948a;
+      outline: none;
+    }
+    button.calc {
+      width: 100%;
+      max-width: 320px;
+      padding: 14px 0;
+      font-weight: 700;
+      font-size: 1.25em;
+      color: #fff;
+      background-color: #54948a;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(84,148,138,0.6);
+      transition: background-color 0.3s ease;
+    }
+    button.calc:hover {
+      background-color: #3f6f69;
+    }
+    button.calc:active {
+      transform: scale(0.97);
+    }
+    pre#result {
+      margin-top: 26px;
+      font-weight: 700;
+      font-size: 1.4em;
+      min-height: 80px;
+      white-space: pre-line;
+      text-align: center;
+      color: #317066;
+      user-select: text;
+    }
+    body.dark pre#result {
+      color: #7dbfb7;
+    }
+    /* 상단 버튼 그룹 */
+    #topButtons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    #topButtons button {
+      padding: 8px 20px;
+      border-radius: 20px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      font-weight: 600;
+      background: none;
+      color: #54948a;
+      transition: all 0.3s ease;
+    }
+    #topButtons button.active {
+      background-color: #54948a;
+      color: #fff;
+      border-color: #54948a;
+      box-shadow: 0 0 8px 2px #54948a;
+    }
+    #topButtons button:hover:not(.active) {
+      background-color: #b2d8d2;
+      color: #2f6e63;
+    }
+    body.dark #topButtons button {
+      color: #76b4ae;
+    }
+    body.dark #topButtons button.active {
+      background-color: #54948a;
+      color: #fff;
+    }
+    body.dark #topButtons button:hover:not(.active) {
+      background-color: #3a665f;
+      color: #c0e0d8;
+    }
+    /* 하단 UID */
+    #creatorUID {
+      margin-top: 16px;
+      font-size: 0.85em;
+      color: #888;
+      opacity: 0.6;
+      text-align: center;
+      user-select: none;
+    }
+    body.dark #creatorUID {
+      color: #bbb;
+    }
+    /* 반응형 */
+    @media (max-width: 480px) {
+      #container {
+        width: 100%;
+      }
+      #topButtons button, button.calc, input[type="number"] {
+        max-width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<div id="container">
-
-  <div id="topButtons" role="group" aria-label="모드 및 언어 전환 버튼">
+  <!-- 상단 모드 및 언어 토글 버튼 -->
+  <div id="topButtons" role="group" aria-label="모드 및 언어 전환">
     <button id="lightBtn" class="active" aria-pressed="true">라이트 모드 ☀️</button>
     <button id="darkBtn" aria-pressed="false">다크 모드 🌙</button>
 
@@ -199,177 +190,178 @@
     <button id="enBtn" aria-pressed="false">English 🇺🇸</button>
   </div>
 
-  <h2 id="title">시매사 계산기</h2>
+  <div id="container">
+    <h2 id="title">시매사 계산기</h2>
 
-  <label for="costInput" id="labelCost">물건 원가 입력 (단맥전)</label>
-  <input type="number" id="costInput" min="0" value="0" placeholder="물건 원가를 입력하세요">
+    <label for="costInput" id="labelCost">물건 원가 입력 (단맥전)</label>
+    <input type="number" id="costInput" min="0" value="0" placeholder="물건 원가를 입력하세요" />
 
-  <label for="increaseInput" id="labelIncrease">최대 상승률 입력 (%)</label>
-  <input type="number" id="increaseInput" min="0" max="300" value="300" placeholder="예: 300">
+    <label for="increaseInput" id="labelIncrease">최대 상승률 입력 (%)</label>
+    <input type="number" id="increaseInput" min="0" max="300" value="300" placeholder="예: 300" />
 
-  <label for="bonusLevel" id="labelBonus">판매 보너스 단계 입력 (1~20)</label>
-  <input type="number" id="bonusLevel" min="1" max="20" value="1" placeholder="1~20 숫자 입력">
+    <label for="bonusLevel" id="labelBonus">판매 보너스 단계 입력 (1~20)</label>
+    <input type="number" id="bonusLevel" min="1" max="20" value="1" placeholder="1~20 숫자 입력" />
 
-  <label for="taxLevel" id="labelTax">세금 감면 단계 입력 (1~20)</label>
-  <input type="number" id="taxLevel" min="1" max="20" value="1" placeholder="1~20 숫자 입력">
+    <label for="taxLevel" id="labelTax">세금 감면 단계 입력 (1~20)</label>
+    <input type="number" id="taxLevel" min="1" max="20" value="1" placeholder="1~20 숫자 입력" />
 
-  <label for="sellCountInput" id="labelSellCount">판매 개수 입력</label>
-  <input type="number" id="sellCountInput" min="0" value="1" placeholder="판매한 개수를 입력하세요">
+    <label for="sellCountInput" id="labelSellCount">판매 개수 입력</label>
+    <input type="number" id="sellCountInput" min="0" value="1" placeholder="판매한 개수를 입력하세요" />
 
-  <button id="calcBtn" class="calc" type="button">계산하기</button>
+    <button id="calcBtn" class="calc" type="button">계산하기</button>
 
-  <pre id="result" aria-live="polite" aria-atomic="true">최종 가격</pre>
+    <pre id="result" aria-live="polite" aria-atomic="true">최종 가격</pre>
 
-  <div id="creatorUID" aria-hidden="true">UID : 0037013535</div>
-</div>
+    <div id="creatorUID" aria-hidden="true">UID : 0037013535</div>
+  </div>
 
-<script>
-  // 데이터 배열
-  const bonusData = [null,0.05,0.055,0.06,0.065,0.07,0.075,0.08,
-                     0.085,0.09,0.095,0.10,0.105,0.11,0.115,0.12,
-                     0.125,0.13,0.135,0.14,0.145];
-  const taxReduceData = [null,0.995,0.99,0.985,0.98,0.975,0.97,0.965,
-                        0.96,0.955,0.95,0.945,0.94,0.935,0.93,0.925,
-                        0.92,0.915,0.91,0.905,0.90];
+  <script>
+    // 보너스 및 세금 데이터 배열
+    const bonusData = [null,0.05,0.055,0.06,0.065,0.07,0.075,0.08,
+      0.085,0.09,0.095,0.10,0.105,0.11,0.115,0.12,
+      0.125,0.13,0.135,0.14,0.145];
+    const taxReduceData = [null,0.995,0.99,0.985,0.98,0.975,
+      0.97,0.965,0.96,0.955,0.95,0.945,0.94,0.935,0.93,
+      0.925,0.92,0.915,0.91,0.905,0.90];
 
-  const costInput = document.getElementById('costInput');
-  const increaseInput = document.getElementById('increaseInput');
-  const bonusInput = document.getElementById('bonusLevel');
-  const taxInput = document.getElementById('taxLevel');
-  const sellCountInput = document.getElementById('sellCountInput');
-  const resultEl = document.getElementById('result');
+    const costInput = document.getElementById('costInput');
+    const increaseInput = document.getElementById('increaseInput');
+    const bonusInput = document.getElementById('bonusLevel');
+    const taxInput = document.getElementById('taxLevel');
+    const sellCountInput = document.getElementById('sellCountInput');
+    const resultEl = document.getElementById('result');
 
-  const dict = {
-    ko: {
-      title: "시매사 계산기",
-      labelCost: "물건 원가 입력 (단맥전)",
-      labelIncrease: "최대 상승률 입력 (%)",
-      labelBonus: "판매 보너스 단계 입력 (1~20)",
-      labelTax: "세금 감면 단계 입력 (1~20)",
-      labelSellCount: "판매 개수 입력",
-      btnCalc: "계산하기",
-      errInput: "입력값을 올바르게 입력해주세요!",
-      errStep: "단계는 1~20 사이 숫자여야 합니다!",
-      resultText: (unitPrice, count, total) =>
-        `단가: ${unitPrice.toLocaleString()} 단맥전\n판매 개수: ${count}\n총 합계: ${total.toLocaleString()} 단맥전`
-    },
-    en: {
-      title: "Simaysa Calculator",
-      labelCost: "Enter Cost (commerce coin)",
-      labelIncrease: "Enter Max Increase (%)",
-      labelBonus: "Sales Bonus Level (1~20)",
-      labelTax: "Tax Reduction Level (1~20)",
-      labelSellCount: "Enter Sold Quantity",
-      btnCalc: "Calculate",
-      errInput: "Please enter valid input!",
-      errStep: "Level must be an integer between 1 and 20!",
-      resultText: (unitPrice, count, total) =>
-        `Unit price: ${unitPrice.toLocaleString()} commerce coin\nSold quantity: ${count}\nTotal: ${total.toLocaleString()} commerce coin`
-    }
-  };
+    const dict = {
+      ko: {
+        title: "시매사 계산기",
+        labelCost: "물건 원가 입력 (단맥전)",
+        labelIncrease: "최대 상승률 입력 (%)",
+        labelBonus: "판매 보너스 단계 입력 (1~20)",
+        labelTax: "세금 감면 단계 입력 (1~20)",
+        labelSellCount: "판매 개수 입력",
+        btnCalc: "계산하기",
+        errInput: "입력값을 올바르게 입력해주세요!",
+        errStep: "단계는 1~20 사이 숫자여야 합니다!",
+        resultText: (unitPrice, count, total) =>
+          `단가: ${unitPrice.toLocaleString()} 단맥전\n판매 개수: ${count}\n총 합계: ${total.toLocaleString()} 단맥전`
+      },
+      en: {
+        title: "Simaysa Calculator",
+        labelCost: "Enter Cost (commerce coin)",
+        labelIncrease: "Enter Max Increase (%)",
+        labelBonus: "Sales Bonus Level (1~20)",
+        labelTax: "Tax Reduction Level (1~20)",
+        labelSellCount: "Enter Sold Quantity",
+        btnCalc: "Calculate",
+        errInput: "Please enter valid input!",
+        errStep: "Level must be an integer between 1 and 20!",
+        resultText: (unitPrice, count, total) =>
+          `Unit price: ${unitPrice.toLocaleString()} commerce coin\nSold quantity: ${count}\nTotal: ${total.toLocaleString()} commerce coin`
+      }
+    };
 
-  function setLanguage(lang) {
-    const d = dict[lang];
-    document.getElementById('title').textContent = d.title;
-    document.getElementById('labelCost').textContent = d.labelCost;
-    document.getElementById('labelIncrease').textContent = d.labelIncrease;
-    document.getElementById('labelBonus').textContent = d.labelBonus;
-    document.getElementById('labelTax').textContent = d.labelTax;
-    document.getElementById('labelSellCount').textContent = d.labelSellCount;
-    document.getElementById('calcBtn').textContent = d.btnCalc;
-    resultEl.textContent = lang==='ko' ? "최종 가격" : "Final Price";
-    document.documentElement.lang = lang;
+    function setLanguage(lang) {
+      const d = dict[lang];
+      document.getElementById('title').textContent = d.title;
+      document.getElementById('labelCost').textContent = d.labelCost;
+      document.getElementById('labelIncrease').textContent = d.labelIncrease;
+      document.getElementById('labelBonus').textContent = d.labelBonus;
+      document.getElementById('labelTax').textContent = d.labelTax;
+      document.getElementById('labelSellCount').textContent = d.labelSellCount;
+      document.getElementById('calcBtn').textContent = d.btnCalc;
+      resultEl.textContent = lang==='ko' ? "최종 가격" : "Final Price";
+      document.documentElement.lang = lang;
 
-    koBtn.setAttribute('aria-pressed', lang==='ko');
-    enBtn.setAttribute('aria-pressed', lang==='en');
-    koBtn.classList.toggle('active', lang==='ko');
-    enBtn.classList.toggle('active', lang==='en');
-  }
-
-  function calculate() {
-    const cost = Number(costInput.value);
-    const increase = Number(increaseInput.value);
-    const bonusLevel = Number(bonusInput.value);
-    const taxLevel = Number(taxInput.value);
-    const sellCount = Number(sellCountInput.value);
-    const lang = document.documentElement.lang || 'ko';
-    const d = dict[lang];
-
-    if (
-      isNaN(cost) || cost < 0 ||
-      isNaN(increase) || increase < 0 || increase > 300 ||
-      !Number.isInteger(bonusLevel) || bonusLevel < 1 || bonusLevel > 20 ||
-      !Number.isInteger(taxLevel) || taxLevel < 1 || taxLevel > 20 ||
-      isNaN(sellCount) || sellCount < 0
-    ) {
-      resultEl.textContent = d.errInput;
-      return;
+      koBtn.setAttribute('aria-pressed', lang==='ko');
+      enBtn.setAttribute('aria-pressed', lang==='en');
+      koBtn.classList.toggle('active', lang==='ko');
+      enBtn.classList.toggle('active', lang==='en');
     }
 
-    if (!bonusData[bonusLevel] || !taxReduceData[taxLevel]) {
-      resultEl.textContent = d.errStep;
-      return;
+    function calculate() {
+      const cost = Number(costInput.value);
+      const increase = Number(increaseInput.value);
+      const bonusLevel = Number(bonusInput.value);
+      const taxLevel = Number(taxInput.value);
+      const sellCount = Number(sellCountInput.value);
+      const lang = document.documentElement.lang || 'ko';
+      const d = dict[lang];
+
+      if (
+        isNaN(cost) || cost < 0 ||
+        isNaN(increase) || increase < 0 || increase > 300 ||
+        !Number.isInteger(bonusLevel) || bonusLevel < 1 || bonusLevel > 20 ||
+        !Number.isInteger(taxLevel) || taxLevel < 1 || taxLevel > 20 ||
+        isNaN(sellCount) || sellCount < 0
+      ) {
+        resultEl.textContent = d.errInput;
+        return;
+      }
+
+      if (!bonusData[bonusLevel] || !taxReduceData[taxLevel]) {
+        resultEl.textContent = d.errStep;
+        return;
+      }
+
+      const bonus = bonusData[bonusLevel];
+      const taxReduce = taxReduceData[taxLevel];
+      const increaseRate = increase / 100;
+
+      const unitPrice = cost * (1 + increaseRate) * (1 + bonus) * taxReduce;
+      const total = unitPrice * sellCount;
+
+      resultEl.textContent = d.resultText(Math.round(unitPrice), sellCount, Math.round(total));
     }
 
-    const bonus = bonusData[bonusLevel];
-    const taxReduce = taxReduceData[taxLevel];
-    const increaseRate = increase / 100;
+    document.getElementById('calcBtn').addEventListener('click', calculate);
 
-    const unitPrice = cost * (1 + increaseRate) * (1 + bonus) * taxReduce;
-    const total = unitPrice * sellCount;
+    // 다크/라이트 모드 토글
+    const darkBtn = document.getElementById('darkBtn');
+    const lightBtn = document.getElementById('lightBtn');
 
-    resultEl.textContent = d.resultText(Math.round(unitPrice), sellCount, Math.round(total));
-  }
+    darkBtn.addEventListener('click', () => {
+      document.body.classList.add('dark');
+      darkBtn.classList.add('active');
+      darkBtn.setAttribute('aria-pressed', 'true');
+      lightBtn.classList.remove('active');
+      lightBtn.setAttribute('aria-pressed', 'false');
+    });
 
-  document.getElementById('calcBtn').addEventListener('click', calculate);
+    lightBtn.addEventListener('click', () => {
+      document.body.classList.remove('dark');
+      lightBtn.classList.add('active');
+      lightBtn.setAttribute('aria-pressed', 'true');
+      darkBtn.classList.remove('active');
+      darkBtn.setAttribute('aria-pressed', 'false');
+    });
 
-  // 모드 토글
-  const darkBtn = document.getElementById('darkBtn');
-  const lightBtn = document.getElementById('lightBtn');
+    // 언어 전환 버튼
+    const koBtn = document.getElementById('koBtn');
+    const enBtn = document.getElementById('enBtn');
 
-  darkBtn.addEventListener('click', () => {
-    document.body.classList.add('dark');
-    darkBtn.classList.add('active');
-    darkBtn.setAttribute('aria-pressed', 'true');
-    lightBtn.classList.remove('active');
-    lightBtn.setAttribute('aria-pressed', 'false');
-  });
+    koBtn.addEventListener('click', () => setLanguage('ko'));
+    enBtn.addEventListener('click', () => setLanguage('en'));
 
-  lightBtn.addEventListener('click', () => {
-    document.body.classList.remove('dark');
-    lightBtn.classList.add('active');
-    lightBtn.setAttribute('aria-pressed', 'true');
-    darkBtn.classList.remove('active');
-    darkBtn.setAttribute('aria-pressed', 'false');
-  });
+    window.onload = () => {
+      setLanguage('ko');
+      document.body.classList.remove('dark');
+    };
+  </script>
 
-  // 언어 전환 버튼
-  const koBtn = document.getElementById('koBtn');
-  const enBtn = document.getElementById('enBtn');
+  <!-- 상단에 언어 및 모드 토글 버튼 -->
+  <div style="text-align: center; margin-bottom: 12px;">
+    <button id="koBtn" class="active" aria-pressed="true">한국어 🇰🇷</button>
+    <button id="enBtn" aria-pressed="false">English 🇺🇸</button>
+  </div>
+  <div style="text-align: center; margin-bottom: 18px;">
+    <button id="lightBtn" class="active" aria-pressed="true">라이트 모드 ☀️</button>
+    <button id="darkBtn" aria-pressed="false">다크 모드 🌙</button>
+  </div>
 
-  koBtn.addEventListener('click', () => setLanguage('ko'));
-  enBtn.addEventListener('click', () => setLanguage('en'));
-
-  window.onload = () => {
-    setLanguage('ko');
-    document.body.classList.remove('dark');
-  };
-</script>
-
-<!-- 언어 전환 및 모드 토글 버튼 위치-->
-<div style="text-align:center; margin: 16px 0 0;">
-  <button id="koBtn" class="active" aria-pressed="true">한국어 🇰🇷</button>
-  <button id="enBtn" aria-pressed="false">English 🇺🇸</button>
-</div>
-<div style="text-align:center; margin: 4px 0 20px;">
-  <button id="lightBtn" class="active" aria-pressed="true">라이트 모드 ☀️</button>
-  <button id="darkBtn" aria-pressed="false">다크 모드 🌙</button>
-</div>
-
-<!-- UID 하단 중앙 -->
-<div id="creatorUID" aria-hidden="true" style="text-align:center; font-size:0.85em; color:#888; user-select:none; margin-bottom: 12px;">
-  UID : 0037013535
-</div>
+  <!-- 하단 중앙 UID 표시 -->
+  <div id="creatorUID" aria-hidden="true" style="text-align:center; font-size:0.85em; color:#888; user-select:none; margin-bottom: 8px;">
+    UID : 0037013535
+  </div>
 
 </body>
 </html>
