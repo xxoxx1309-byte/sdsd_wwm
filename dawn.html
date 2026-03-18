@@ -1,193 +1,193 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>시매사 계산기</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet" />
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0; padding: 0;
-      font-family: 'Noto Sans', sans-serif;
-      background-color: #fdfdfd;
-      color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      padding: 20px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-    body.dark {
-      background-color: #121212;
-      color: #d6f0f0;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>시매사 계산기</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet" />
+<style>
+  html, body {
+    height: 100%;
+    margin: 0; padding: 0;
+    font-family: 'Noto Sans', sans-serif;
+    background-color: #fdfdfd;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh;
+  }
+  body.dark {
+    background-color: #121212;
+    color: #d6f0f0;
+  }
+  #container {
+    max-width: 520px;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 24px 20px 48px;
+    box-sizing: border-box;
+    box-shadow: 0 6px 16px rgba(84,148,138,0.3);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  body.dark #container {
+    background-color: #1f3936;
+    color: #d6f0f0;
+    box-shadow: 0 6px 20px rgba(84,148,138,0.7);
+  }
+  h2 {
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 28px;
+  }
+  body.dark h2 {
+    color: #54948a;
+  }
+  #topControls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  #topControls button {
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 2px solid transparent;
+    background: none;
+    color: #54948a;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  #topControls button.active {
+    background-color: #54948a;
+    color: #fff;
+    border-color: #54948a;
+    box-shadow: 0 0 8px 2px #54948a;
+  }
+  #topControls button:not(.active):hover {
+    background-color: #b2d8d2;
+    color: #2f6e63;
+  }
+  body.dark #topControls button {
+    color: #76b4ae;
+  }
+  body.dark #topControls button.active {
+    background-color: #54948a;
+    color: #fff;
+  }
+  body.dark #topControls button:not(.active):hover {
+    background-color: #3a665f;
+    color: #c0e0d8;
+  }
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 1.1em;
+    color: #4a7a72;
+  }
+  body.dark label {
+    color: #76b4ae;
+  }
+  input[type="number"] {
+    width: 100%;
+    max-width: 320px;
+    padding: 12px 14px;
+    margin-bottom: 18px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    border: 1.5px solid #bbb;
+    background-color: #fff;
+    color: #333;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+  }
+  body.dark input[type="number"] {
+    background-color: #164137;
+    border-color: #3a6560;
+    color: #d6f0f0;
+  }
+  input[type="number"]:focus {
+    border-color: #54948a;
+    outline: none;
+  }
+  fieldset {
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    max-width: 320px;
+  }
+  legend {
+    font-weight: 700;
+    color: #54948a;
+    user-select: none;
+  }
+  fieldset label {
+    margin-right: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button.calc {
+    width: 100%;
+    max-width: 320px;
+    font-weight: 700;
+    font-size: 1.25em;
+    padding: 14px 0;
+    border: none;
+    border-radius: 10px;
+    background-color: #54948a;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(84,148,138,0.6);
+    transition: background-color 0.3s ease;
+  }
+  button.calc:hover {
+    background-color: #3f6f69;
+  }
+  button.calc:active {
+    transform: scale(0.97);
+  }
+  pre#result {
+    margin-top: 26px;
+    font-weight: 700;
+    font-size: 1.4em;
+    min-height: 80px;
+    white-space: pre-line;
+    text-align: center;
+    color: #317066;
+    user-select: text;
+  }
+  body.dark pre#result {
+    color: #7dbfb7;
+  }
+  #creatorUID {
+    margin-top: 16px;
+    font-size: 0.85em;
+    color: #888;
+    opacity: 0.6;
+    text-align: center;
+    user-select: none;
+  }
+  body.dark #creatorUID {
+    color: #bbb;
+  }
+  @media (max-width: 520px) {
     #container {
-      max-width: 520px;
       width: 100%;
-      background-color: #fff;
-      border-radius: 12px;
-      padding: 24px 20px 48px;
-      box-sizing: border-box;
-      box-shadow: 0 6px 16px rgba(84,148,138,0.3);
-      transition: background-color 0.3s ease, color 0.3s ease;
     }
-    body.dark #container {
-      background-color: #1f3936;
-      color: #d6f0f0;
-      box-shadow: 0 6px 20px rgba(84,148,138,0.7);
+    #topControls button, button.calc, input[type="number"], fieldset {
+      max-width: 100%;
     }
-    h2 {
-      text-align: center;
-      font-weight: 700;
-      font-size: 1.8rem;
-      margin-bottom: 28px;
-    }
-    body.dark h2 {
-      color: #54948a;
-    }
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      font-size: 1.1em;
-      color: #4a7a72;
-    }
-    body.dark label {
-      color: #76b4ae;
-    }
-    input[type="number"] {
-      width: 100%;
-      max-width: 320px;
-      padding: 12px 14px;
-      margin-bottom: 18px;
-      font-size: 1.1em;
-      border-radius: 8px;
-      border: 1.5px solid #bbb;
-      background-color: #fff;
-      color: #333;
-      box-sizing: border-box;
-      transition: all 0.3s ease;
-    }
-    body.dark input[type="number"] {
-      background-color: #164137;
-      border-color: #3a6560;
-      color: #d6f0f0;
-    }
-    input[type="number"]:focus {
-      border-color: #54948a;
-      outline: none;
-    }
-    fieldset {
-      border: 1px solid #bbb;
-      border-radius: 8px;
-      padding: 12px 16px;
-      margin-bottom: 20px;
-      max-width: 320px;
-    }
-    legend {
-      font-weight: 700;
-      color: #54948a;
-      user-select: none;
-    }
-    fieldset label {
-      margin-right: 15px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    button.calc {
-      width: 100%;
-      max-width: 320px;
-      font-weight: 700;
-      font-size: 1.25em;
-      padding: 14px 0;
-      border: none;
-      border-radius: 10px;
-      background-color: #54948a;
-      color: #fff;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(84,148,138,0.6);
-      transition: background-color 0.3s ease;
-    }
-    button.calc:hover {
-      background-color: #3f6f69;
-    }
-    button.calc:active {
-      transform: scale(0.97);
-    }
-    pre#result {
-      margin-top: 26px;
-      font-weight: 700;
-      font-size: 1.4em;
-      min-height: 80px;
-      white-space: pre-line;
-      text-align: center;
-      color: #317066;
-      user-select: text;
-    }
-    body.dark pre#result {
-      color: #7dbfb7;
-    }
-    #creatorUID {
-      margin-top: 16px;
-      font-size: 0.85em;
-      color: #888;
-      opacity: 0.6;
-      text-align: center;
-      user-select: none;
-    }
-    body.dark #creatorUID {
-      color: #bbb;
-    }
-    /* 상단 토글 */
-    #topControls {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-    }
-    #topControls button {
-      cursor: pointer;
-      padding: 8px 20px;
-      border-radius: 20px;
-      border: 2px solid transparent;
-      background: none;
-      font-weight: 600;
-      color: #54948a;
-      transition: all 0.3s ease;
-    }
-    #topControls button.active {
-      background-color: #54948a;
-      color: #fff;
-      border-color: #54948a;
-      box-shadow: 0 0 8px 2px #54948a;
-    }
-    #topControls button:not(.active):hover {
-      background-color: #b2d8d2;
-      color: #2f6e63;
-    }
-    body.dark #topControls button {
-      color: #76b4ae;
-    }
-    body.dark #topControls button.active {
-      background-color: #54948a;
-      color: #fff;
-    }
-    body.dark #topControls button:not(.active):hover {
-      background-color: #3a665f;
-      color: #c0e0d8;
-    }
-    @media (max-width: 520px) {
-      #container {
-        width: 100%;
-      }
-      #topControls button, button.calc, input[type="number"], fieldset {
-        max-width: 100%;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
   <div id="container">
@@ -340,7 +340,7 @@
 
     document.getElementById('calcBtn').addEventListener('click', calculate);
 
-    // 모드 토글 버튼
+    // 다크/라이트 모드 토글
     const darkBtn = document.getElementById('darkBtn');
     const lightBtn = document.getElementById('lightBtn');
     darkBtn.addEventListener('click', () => {
@@ -370,7 +370,7 @@
     };
   </script>
 
-  <!-- 상단 버튼 추가 -->
+  <!-- 상단 토글 버튼 -->
   <div style="text-align:center; margin: 12px 0 0;">
     <button id="koBtn" class="active" aria-pressed="true" type="button">한국어 🇰🇷</button>
     <button id="enBtn" aria-pressed="false" type="button">English 🇺🇸</button>
@@ -381,8 +381,7 @@
   </div>
 
   <!-- 하단 중앙 UID -->
-  <div id="creatorUID" aria-hidden="true" 
-       style="text-align:center; font-size:0.85em; color:#888; user-select:none; margin-bottom: 8px;">
+  <div id="creatorUID" aria-hidden="true" style="text-align:center; font-size:0.85em; color:#888; user-select:none; margin-bottom: 8px;">
     UID : 0037013535
   </div>
 
