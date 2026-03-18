@@ -34,12 +34,10 @@
     border-radius: 12px;
     padding: 24px 20px 48px;
     box-sizing: border-box;
-    box-shadow: 0 6px 16px rgba(84,148,138,0.3);
     transition: background-color 0.3s ease, color 0.3s ease;
   }
   body.dark #container {
     background-color: #1f3936;
-    box-shadow: 0 6px 20px rgba(84,148,138,0.75);
     color: #d6f0f0;
   }
   h2 {
@@ -74,7 +72,6 @@
     background-color: #54948a;
     color: #fff;
     border-color: #54948a;
-    box-shadow: 0 0 8px 2px #54948a;
   }
   #topControls button:hover:not(.active) {
     background-color: #b2d8d2;
@@ -157,7 +154,6 @@
     background-color: #54948a;
     color: #fff;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(84,148,138,0.6);
     transition: background-color 0.3s ease;
   }
   button.calc:hover {
@@ -313,11 +309,6 @@
     document.getElementById('calcBtn').textContent = d.btnCalc;
     resultEl.textContent = lang === 'ko' ? '최종 가격' : 'Final Price';
     document.documentElement.lang = lang;
-
-    koBtn.setAttribute('aria-pressed', lang === 'ko');
-    enBtn.setAttribute('aria-pressed', lang === 'en');
-    koBtn.classList.toggle('active', lang === 'ko');
-    enBtn.classList.toggle('active', lang === 'en');
   }
 
   function calculate() {
@@ -358,43 +349,9 @@
 
   document.getElementById('calcBtn').addEventListener('click', calculate);
 
-  // 다크 라이트 모드 토글
-  const darkBtn = document.getElementById('darkBtn');
-  const lightBtn = document.getElementById('lightBtn');
-  darkBtn.addEventListener('click', () => {
-    document.body.classList.add('dark');
-    darkBtn.classList.add('active');
-    darkBtn.setAttribute('aria-pressed', 'true');
-    lightBtn.classList.remove('active');
-    lightBtn.setAttribute('aria-pressed', 'false');
-  });
-  lightBtn.addEventListener('click', () => {
-    document.body.classList.remove('dark');
-    lightBtn.classList.add('active');
-    lightBtn.setAttribute('aria-pressed', 'true');
-    darkBtn.classList.remove('active');
-    darkBtn.setAttribute('aria-pressed', 'false');
-  });
-
-  // 한영 언어 토글
-  const koBtn = document.getElementById('koBtn');
-  const enBtn = document.getElementById('enBtn');
-  koBtn.addEventListener('click', () => setLanguage('ko'));
-  enBtn.addEventListener('click', () => setLanguage('en'));
-
   // 초기 로드 언어 설정
   window.onload = () => setLanguage('ko');
 </script>
-
-<!-- 상단에 버튼 추가 -->
-<div style="text-align:center; margin:12px 0;">
-  <button id="koBtn" class="active" aria-pressed="true" type="button">한국어 🇰🇷</button>
-  <button id="enBtn" aria-pressed="false" type="button">English 🇺🇸</button>
-</div>
-<div style="text-align:center; margin-bottom:20px;">
-  <button id="lightBtn" class="active" aria-pressed="true" type="button">라이트 모드 ☀️</button>
-  <button id="darkBtn" aria-pressed="false" type="button">다크 모드 🌙</button>
-</div>
 
 <!-- 중앙 정렬과 폰트 완전 적용된 UI 끝 -->
 <!-- UID는 하단 정중앙에 배치 -->
